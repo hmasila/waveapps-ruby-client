@@ -22,7 +22,13 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+1. Run `export WAVEAPPS_TOKEN <YOUR TOKEN>` which will set the token
+2. Run `rake schema:dump` to dump the latest schema on init, this will make a network request.
+
+### create invoices
+```ruby
+Waveapps::Invoice.create_invoice(business_id: <BUSINESS_ID>, customer_id: <CUSTOMER_ID>, items: [{product_id: <PRODUCT_ID>}])
+```
 
 ## Development
 

@@ -26,6 +26,7 @@ Or install it yourself as:
 2. Run `rake schema:dump` to dump the latest schema on init, this will make a network request.
 
 ### create invoices
+
 ```ruby
 Waveapps::Invoice.create_invoice(business_id: <BUSINESS_ID>, customer_id: <CUSTOMER_ID>, items: [{product_id: <PRODUCT_ID>}])
 ```

@@ -18,14 +18,20 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install waveapps
+    $ gem install waveapps-ruby-client
 
 ## Usage
 
-Run `export WAVEAPPS_TOKEN <YOUR TOKEN>` which will set the token
+The library needs to be configured with your account's access token which is available in your Waveapps Account. Set Waveapps.access_token to its value:
 
-### create invoices
-Replace <BUSINESS_ID>, <CUSTOMER_ID>, and <PRODUCT_ID> with real ids.
+```ruby
+require "waveapps-ruby-client"
+Waveapps.access_token = "sjblah_..."
+```
+
+
+### Create invoices
+Replace `<BUSINESS_ID>`, `<CUSTOMER_ID>`, and `<PRODUCT_ID>` with real ids.
 
 ```ruby
 Waveapps::Invoice.create_invoice(business_id: <BUSINESS_ID>, customer_id: <CUSTOMER_ID>, items: [{product_id: <PRODUCT_ID>}])

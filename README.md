@@ -1,6 +1,6 @@
-# Waveapps::Ruby::Client
+# Waveapps Ruby Client
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/waveapps/ruby/client`. To experiment with that code, run `bin/console` for an interactive prompt.
+Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/waveapps`. To experiment with that code, run `bin/console` for an interactive prompt.
 
 TODO: Delete this and the text above, and describe your gem
 
@@ -22,7 +22,28 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+The library needs to be configured with your account's access token which is available in your Waveapps Account. Set Waveapps.access_token to its value:
+
+```ruby
+require "waveapps-ruby-client"
+Waveapps.access_token = "sjblah_..."
+```
+
+
+### Create invoices
+Replace `<BUSINESS_ID>`, `<CUSTOMER_ID>`, and `<PRODUCT_ID>` with real ids.
+
+```ruby
+Waveapps::Invoice.create_invoice(business_id: <BUSINESS_ID>, customer_id: <CUSTOMER_ID>, items: [{product_id: <PRODUCT_ID>}])
+```
+Optional arguments
+
+```
+status:, currency:, title:, invoice_number:,
+po_number:, invoice_date:, exchange_rate:, due_date:,
+memo:, footer:, disable_amex_payments:, disable_credit_card_payments:,
+disable_bank_payments:, item_title:, unit_title:, price_title:, amount_title:, hide_name:, hide_description:, hide_unit:, hide_price:, hide_amount:
+```
 
 ## Development
 
@@ -40,4 +61,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Waveapps::Ruby::Client project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/hmasila/waveapps-ruby-client/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Waveapps project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/hmasila/waveapps-ruby-client/blob/master/CODE_OF_CONDUCT.md).

@@ -1,8 +1,8 @@
 # Waveapps Ruby Client
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/waveapps`. To experiment with that code, run `bin/console` for an interactive prompt.
+The Waveapps Ruby library provides convenient access to the Waveapps GraphQL API from applications written in the Ruby language. It includes a pre-defined set of classes for API resources that initialize themselves dynamically from API responses.
 
-TODO: Delete this and the text above, and describe your gem
+The library provides easy configuration path for fast setup and use. It also has helpers for pagination when listing resources. The `page` and `page_size` attributes will handle pagination in all resources.
 
 ## Installation
 
@@ -38,12 +38,11 @@ Waveapps::Invoice.create_invoice(business_id: <BUSINESS_ID>, customer_id: <CUSTO
 ```
 Optional arguments
 
-```
-status:, currency:, title:, invoice_number:,
-po_number:, invoice_date:, exchange_rate:, due_date:,
-memo:, footer:, disable_amex_payments:, disable_credit_card_payments:,
-disable_bank_payments:, item_title:, unit_title:, price_title:, amount_title:, hide_name:, hide_description:, hide_unit:, hide_price:, hide_amount:
-```
+`status`, `currency`, `title`, `invoice_number`,
+`po_number`, `invoice_date`, `exchange_rate`, `due_date`,
+`memo`, `footer`, `disable_amex_payments`, `disable_credit_card_payments`,
+`disable_bank_payments`, `item_title`, `unit_title`, `price_title`, `amount_title`, `hide_name`, `hide_description`, `hide_unit`, `hide_price`, `hide_amount`
+
 
 ## Development
 

@@ -38,12 +38,11 @@ Waveapps::Invoice.create_invoice(business_id: <BUSINESS_ID>, customer_id: <CUSTO
 ```
 Optional arguments
 
-```
-status:, currency:, title:, invoice_number:,
-po_number:, invoice_date:, exchange_rate:, due_date:,
-memo:, footer:, disable_amex_payments:, disable_credit_card_payments:,
-disable_bank_payments:, item_title:, unit_title:, price_title:, amount_title:, hide_name:, hide_description:, hide_unit:, hide_price:, hide_amount:
-```
+`status`, `currency`, `title`, `invoice_number`,
+`po_number`, `invoice_date`, `exchange_rate`, `due_date`,
+`memo`, `footer`, `disable_amex_payments`, `disable_credit_card_payments`,
+`disable_bank_payments`, `item_title`, `unit_title`, `price_title`, `amount_title`, `hide_name`, `hide_description`, `hide_unit`, `hide_price`, `hide_amount`
+
 
 ## Development
 

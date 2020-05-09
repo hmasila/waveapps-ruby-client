@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "waveapps/ruby/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "waveapps-ruby-client"
+  spec.name          = "waveapps"
   spec.version       = Waveapps::Ruby::VERSION
   spec.authors       = ["Hannah Masila"]
   spec.email         = ["hannahmasila@gmail.com"]

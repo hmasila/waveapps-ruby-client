@@ -1,6 +1,6 @@
 module Waveapps
   class Invoice
-  	ListInvoicesQuery = Waveapps::Client.parse <<-'GRAPHQL'
+  	ListInvoicesQuery = Waveapps::Api::Client.parse <<-'GRAPHQL'
   		query($businessId: ID!, $page: Int!, $pageSize: Int!) {
 			  business(id: $businessId) {
 			    id
@@ -123,14 +123,14 @@ module Waveapps
 		GRAPHQL
 
 		def self.list_invoices(page: 1, page_size: 10, business_id:)
-  		result = Waveapps::Client.query(ListInvoicesQuery, variables: {
+  		result = Waveapps::Api::Client.query(ListInvoicesQuery, variables: {
         businessId: business_id, page: page, pageSize: page_size
       }).data
   		return nil if result.business.nil?
   		result.business.invoices.edges.map {|n| n.node}
   	end
 
-  	CreateInvoiceQuery = Waveapps::Client.parse <<-'GRAPHQL'
+  	CreateInvoiceQuery = Waveapps::Api::Client.parse <<-'GRAPHQL'
   		mutation ($input: InvoiceCreateInput!) {
 			  invoiceCreate(input: $input) {
 			    didSucceed
@@ -255,7 +255,7 @@ module Waveapps
       amount_title: nil, hide_name: nil, hide_description: nil, hide_unit: nil,
       hide_price: nil, hide_amount: nil, items: , business_id: , customer_id: )
 
-      Waveapps::Client.query(CreateInvoiceQuery, variables: {
+      Waveapps::Api::Client.query(CreateInvoiceQuery, variables: {
   			input: {
   				businessId: business_id,
   				customerId: customer_id,
@@ -291,7 +291,7 @@ module Waveapps
   		})
   	end
 
-  	DeleteInvoiceQuery = Waveapps::Client.parse <<-'GRAPHQL'
+  	DeleteInvoiceQuery = Waveapps::Api::Client.parse <<-'GRAPHQL'
   		mutation ($input: InvoiceDeleteInput!) {
   			invoiceDelete(input: $input) {
 			    didSucceed
@@ -305,7 +305,7 @@ module Waveapps
   	GRAPHQL
 
   	def self.delete_invoice(id)
-  		result = Waveapps::Client.query(DeleteInvoiceQuery, variables: {input: { id: id}})
+  		result = Waveapps::Api::Client.query(DeleteInvoiceQuery, variables: {input: { id: id}})
 			result.data
   	end
   end

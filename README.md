@@ -1,4 +1,4 @@
-# Waveapps
+# Waveapps Ruby Client
 
 Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/waveapps`. To experiment with that code, run `bin/console` for an interactive prompt.
 
@@ -9,7 +9,7 @@ TODO: Delete this and the text above, and describe your gem
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'waveapps'
+gem 'waveapps-ruby-client'
 ```
 
 And then execute:
@@ -25,9 +25,18 @@ Or install it yourself as:
 Run `export WAVEAPPS_TOKEN <YOUR TOKEN>` which will set the token
 
 ### create invoices
+Replace <BUSINESS_ID>, <CUSTOMER_ID>, and <PRODUCT_ID> with real ids.
 
 ```ruby
 Waveapps::Invoice.create_invoice(business_id: <BUSINESS_ID>, customer_id: <CUSTOMER_ID>, items: [{product_id: <PRODUCT_ID>}])
+```
+Optional arguments
+
+```
+status:, currency:, title:, invoice_number:,
+po_number:, invoice_date:, exchange_rate:, due_date:,
+memo:, footer:, disable_amex_payments:, disable_credit_card_payments:,
+disable_bank_payments:, item_title:, unit_title:, price_title:, amount_title:, hide_name:, hide_description:, hide_unit:, hide_price:, hide_amount:
 ```
 
 ## Development

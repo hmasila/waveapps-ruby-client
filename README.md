@@ -1,4 +1,4 @@
-# Waveapps Ruby Client
+# Waveapps
 
 The Waveapps Ruby library provides convenient access to the Waveapps GraphQL API from applications written in the Ruby language. It includes a pre-defined set of classes for API resources that initialize themselves dynamically from API responses.
 
@@ -9,7 +9,7 @@ The library provides easy configuration path for fast setup and use. It also has
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'waveapps-ruby-client'
+gem 'waveapps'
 ```
 
 And then execute:
@@ -18,14 +18,14 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install waveapps-ruby-client
+    $ gem install waveapps
 
 ## Usage
 
 The library needs to be configured with your account's access token which is available in your Waveapps Account. Set Waveapps.access_token to its value:
 
 ```ruby
-require "waveapps-ruby-client"
+require "waveapps"
 Waveapps.access_token = "sjblah_..."
 ```
 

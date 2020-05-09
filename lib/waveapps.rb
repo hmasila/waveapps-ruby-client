@@ -277,12 +277,12 @@ module Waveapps
   	GRAPHQL
 
   	def self.create_invoice(
-      status: nil, currency: nil, title: nil, invoiceNumber: nil,
-      poNumber: nil, invoiceDate: nil, exchangeRate: nil, dueDate: nil,
-      memo: nil, footer: nil, disableAmexPayments: nil, disableCreditCardPayments: nil,
-      disableBankPayments: nil, itemTitle: nil, unitTitle: nil, priceTitle: nil,
-      amountTitle: nil, hideName: nil, hideDescription: nil, hideUnit: nil,
-      hidePrice: nil, hideAmount: nil, items: , business_id: , customer_id: )
+      status: nil, currency: nil, title: nil, invoice_number: nil,
+      po_number: nil, invoice_date: nil, exchange_rate: nil, due_date: nil,
+      memo: nil, footer: nil, disable_amex_payments: nil, disable_credit_card_payments: nil,
+      disable_bank_payments: nil, item_title: nil, unit_title: nil, price_title: nil,
+      amount_title: nil, hide_name: nil, hide_description: nil, hide_unit: nil,
+      hide_price: nil, hide_amount: nil, items: , business_id: , customer_id: )
 
       Waveapps::Client.query(CreateInvoiceQuery, variables: {
   			input: {
@@ -293,7 +293,29 @@ module Waveapps
             quantity: pid[:quantity],
             description: pid[:description],
             unitPrice: pid[:unit_price]
-          }}
+          }},
+          status: status,
+          currency: currency,
+          title: title,
+          invoiceNumber: invoice_number,
+          poNumber: po_number,
+          invoiceDate: invoice_date,
+          exchangeRate: exchange_rate,
+          dueDate: due_date,
+          memo: memo,
+          footer: footer,
+          disableAmexPayments: disable_amex_payments,
+          disableCreditCardPayments: disable_credit_card_payments,
+          disableBankPayments: disable_bank_payments,
+          itemTitle: item_title,
+          unitTitle: unit_title,
+          priceTitle: price_title,
+          amountTitle: amount_title,
+          hideName: hide_name,
+          hideDescription: hide_description,
+          hideUnit: hide_unit,
+          hidePrice: hide_price,
+          hideAmount: hide_amount
   			}
   		})
   	end

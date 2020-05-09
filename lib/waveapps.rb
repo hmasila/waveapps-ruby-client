@@ -276,20 +276,15 @@ module Waveapps
 			}
   	GRAPHQL
 
-    # {
-		#   "input": {
-		#     "businessId": "<BUSINESS_ID>",
-		#     "customerId": "<CUSTOMER_ID>",
-		#     "items": [
-		#       {
-		#         "productId": "<PRODUCT_ID>"
-		#       }
-		#     ]
-		#   }
-		# }
+  	def self.create_invoice(
+      status: nil, currency: nil, title: nil, invoiceNumber: nil,
+      poNumber: nil, invoiceDate: nil, exchangeRate: nil, dueDate: nil,
+      memo: nil, footer: nil, disableAmexPayments: nil, disableCreditCardPayments: nil,
+      disableBankPayments: nil, itemTitle: nil, unitTitle: nil, priceTitle: nil,
+      amountTitle: nil, hideName: nil, hideDescription: nil, hideUnit: nil,
+      hidePrice: nil, hideAmount: nil, items: , business_id: , customer_id: )
 
-  	def self.create_invoice(items: , business_id: , customer_id: )
-  		Waveapps::Client.query(CreateInvoiceQuery, variables: {
+      Waveapps::Client.query(CreateInvoiceQuery, variables: {
   			input: {
   				businessId: business_id,
   				customerId: customer_id,

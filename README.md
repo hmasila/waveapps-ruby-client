@@ -22,8 +22,7 @@ Or install it yourself as:
 
 ## Usage
 
-1. Run `export WAVEAPPS_TOKEN <YOUR TOKEN>` which will set the token
-2. Run `rake schema:dump` to dump the latest schema on init, this will make a network request.
+Run `export WAVEAPPS_TOKEN <YOUR TOKEN>` which will set the token
 
 ### create invoices
 

@@ -251,7 +251,7 @@ module Waveapps
     GRAPHQL
 
     def self.create_invoice(
-      status: nil, currency: nil, title: nil, invoice_number: nil,
+      status: "DRAFT", currency: nil, title: nil, invoice_number: nil,
       po_number: nil, invoice_date: nil, exchange_rate: nil, due_date: nil,
       memo: nil, footer: nil, disable_amex_payments: nil, disable_credit_card_payments: nil,
       disable_bank_payments: nil, item_title: nil, unit_title: nil, price_title: nil,

@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 module Waveapps
   class << self
     attr_accessor :access_token
   end
   class Api
-    API_URL = "https://gql.waveapps.com/graphql/public"
+    API_URL = 'https://gql.waveapps.com/graphql/public'
     HTTP = GraphQL::Client::HTTP.new(API_URL) do
-      def headers(context)
+      def headers(_context)
         # Optionally set any HTTP headers
         {
-        	"Authorization" => "Bearer #{Waveapps.access_token}"
+          'Authorization' => "Bearer #{Waveapps.access_token}"
         }
       end
     end

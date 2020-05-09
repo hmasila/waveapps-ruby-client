@@ -5,13 +5,17 @@ require "graphql/client/http"
 module Waveapps
   class Error < StandardError; end
 	API_URL = "https://gql.waveapps.com/graphql/public"
-  WAVEAPPS_TOKEN = ENV.fetch('WAVEAPPS_TOKEN')
+
+  class << self
+    attr_accessor :access_token
+  end
+
 
   HTTP = GraphQL::Client::HTTP.new(API_URL) do
     def headers(context)
       # Optionally set any HTTP headers
       {
-      	"Authorization" => "Bearer #{WAVEAPPS_TOKEN}"
+      	"Authorization" => "Bearer #{Waveapps.access_token}"
       }
     end
   end
@@ -155,7 +159,7 @@ module Waveapps
   		result = Waveapps::Client.query(ListInvoicesQuery, variables: {
         businessId: business_id, page: page, pageSize: page_size
       }).data
-  		return nil if result.nil?
+  		return nil if result.business.nil?
   		result.business.invoices.edges.map {|n| n.node}
   	end
 

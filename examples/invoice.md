@@ -3,10 +3,18 @@
 ## Create invoice
 
 ```ruby
-Waveapps::Invoice.create_invoice(business_id: <BUSINESS_ID>, customer_id: <CUSTOMER_ID>, items: [{product_id: <PRODUCT_ID>}])
+Waveapps::Invoice.create_invoice(
+  business_id: <BUSINESS_ID>,
+  customer_id: <CUSTOMER_ID>,
+  items: [
+    {
+      product_id: <PRODUCT_ID>
+    }
+  ]
+)
 ```
 
-Optional arguments
+### Optional arguments
 
 `status`, `currency`, `title`, `invoice_number`,
 `po_number`, `invoice_date`, `exchange_rate`, `due_date`,
@@ -18,16 +26,41 @@ The `items` argument takes a mandatory `product_id` value and `taxes`, `quantity
 
 The `taxes` object inside `items` takes a mandatory `sales_tax_id` and an optional `amount`
 
-Example with taxes
+### Example with taxes
 
 ```ruby
-Waveapps::Invoice.create_invoice(business_id: <BUSINESS_ID>, customer_id: <CUSTOMER_ID>, items: [{product_id: <PRODUCT_ID>, taxes: [{amount: 89.7, sales_tax_id: <SALES_TAX_ID>}]}])
+Waveapps::Invoice.create_invoice(
+  business_id: <BUSINESS_ID>,
+  customer_id: <CUSTOMER_ID>,
+  items: [
+    {
+      product_id: <PRODUCT_ID>,
+      taxes: [
+        {
+          amount: 89.7,
+          sales_tax_id: <SALES_TAX_ID>
+        }
+      ]
+    }
+  ]
+)
 ```
 
-Example with product override
+### Example with product override
 
 ```ruby
-Waveapps::Invoice.create_invoice(business_id: <BUSINESS_ID>, customer_id: <CUSTOMER_ID>, items: [{product_id: <PRODUCT_ID>, description: "5 Watt C7 light bulb", unit_price: "2.7", quantity: 5}])
+Waveapps::Invoice.create_invoice(
+  business_id: <BUSINESS_ID>,
+  customer_id: <CUSTOMER_ID>,
+  items: [
+    {
+      product_id: <PRODUCT_ID>,
+      description: "5 Watt C7 light bulb",
+      unit_price: "2.7",
+      quantity: 5
+    }
+  ]
+)
 ```
 
 

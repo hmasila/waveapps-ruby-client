@@ -19,7 +19,7 @@ Waveapps::Invoice.list_invoices(business_id: <BUSINESS_ID>)
 
 ## Send invoice
 
-Provide email of recipients in the `to` argument. Note that this must be an array.
+Provide email of recipients in the `to` argument. If you have more than one recipient, pass it as an array.
 
 ```ruby
 Waveapps::Invoice.send_invoice(invoice_id: <INVOICE_ID>, to: [<EMAIL>])

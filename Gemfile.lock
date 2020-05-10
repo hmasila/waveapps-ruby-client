@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    waveapps (0.1.4)
+    waveapps (0.1.5)
       graphql-client (~> 0.16)
 
 GEM

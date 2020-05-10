@@ -272,7 +272,13 @@ module Waveapps
                productId: pid[:product_id],
                quantity: pid[:quantity],
                description: pid[:description],
-               unitPrice: pid[:unit_price]
+               unitPrice: pid[:unit_price],
+               taxes: pid[:taxes] && pid[:taxes].map do |tax|
+                 {
+                   salesTaxId: tax[:sales_tax_id],
+                   amount: tax[:amount]
+                 }
+               end
               }
             end,
             status: status,

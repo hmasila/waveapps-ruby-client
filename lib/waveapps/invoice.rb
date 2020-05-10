@@ -125,12 +125,15 @@ module Waveapps
     GRAPHQL
 
     def self.list_invoices(page: 1, page_size: 10, business_id:)
-      result = Waveapps::Api::Client.query(ListInvoicesQuery, variables: {
-                                             businessId: business_id, page: page, pageSize: page_size
-                                           }).data
-      return nil if result.business.nil?
+      response = Waveapps::Api::Client.query(
+        ListInvoicesQuery, variables: {
+          businessId: business_id, page: page, pageSize: page_size
+        })
 
-      result.business.invoices.edges.map(&:node)
+      if response.data && response.data.business
+        return response.data.business.invoices.edges.map(&:node)
+      end
+      Waveapps::Api.handle_errors(response, :business)
     end
 
     CreateInvoiceQuery = Waveapps::Api::Client.parse <<-'GRAPHQL'
@@ -259,7 +262,7 @@ module Waveapps
       hide_price: nil, hide_amount: nil, items:, business_id:, customer_id:
     )
 
-      Waveapps::Api::Client.query(
+      response = Waveapps::Api::Client.query(
         CreateInvoiceQuery, variables: {
           input: {
             businessId: business_id,
@@ -296,6 +299,11 @@ module Waveapps
             hideAmount: hide_amount
           }
         })
+
+      if response.data && response.data.invoice_create
+        return response.data.invoice_create
+      end
+      Waveapps::Api.handle_errors(response, :invoice_create)
     end
 
     DeleteInvoiceQuery = Waveapps::Api::Client.parse <<-'GRAPHQL'
@@ -311,9 +319,15 @@ module Waveapps
   		}
     GRAPHQL
 
-    def self.delete_invoice(invoice_id)
-      result = Waveapps::Api::Client.query(DeleteInvoiceQuery, variables: { input: { invoiceId: invoice_id } })
-      result.data
+    def self.delete_invoice(invoice_id:)
+      response = Waveapps::Api::Client.query(DeleteInvoiceQuery, variables:
+        { input: { invoiceId: invoice_id }
+      })
+
+      if response.data && response.data.invoice_delete
+        return response.data.invoice_delete
+      end
+      Waveapps::Api.handle_errors(response, :invoice_delete)
     end
 
     SendInvoiceQuery = Waveapps::Api::Client.parse <<-'GRAPHQL'
@@ -330,22 +344,26 @@ module Waveapps
     GRAPHQL
 
     def self.send_invoice(subject: "", message: "", attach_pdf: false, invoice_id:, to: )
-      result = Waveapps::Api::Client.query(
+      response = Waveapps::Api::Client.query(
         SendInvoiceQuery, variables: {
           input: {
             invoiceId: invoice_id,
             to: to,
-            attachPdf: attach_pdf,
-            subbject: subject,
+            attachPDF: attach_pdf,
+            subject: subject,
             message: message
           }
         })
-      result.data
+
+      if response.data && response.data.invoice_send
+        return response.data.invoice_send
+      end
+      Waveapps::Api.handle_errors(response, :invoice_send)
     end
 
     ApproveInvoiceQuery = Waveapps::Api::Client.parse <<-'GRAPHQL'
       mutation ($input: InvoiceApproveInput!) {
-        invoiceSend(input: $input) {
+        invoiceApprove(input: $input) {
           didSucceed
           inputErrors {
             message
@@ -357,15 +375,19 @@ module Waveapps
     GRAPHQL
 
     def self.approve_invoice(invoice_id: )
-      result = Waveapps::Api::Client.query(ApproveInvoiceQuery, variables: {
+      response = Waveapps::Api::Client.query(ApproveInvoiceQuery, variables: {
         input: { invoiceId: invoice_id }
       })
-      result.data
+
+      if response.data && response.data.invoice_approve
+        return response.data.invoice_approve
+      end
+      Waveapps::Api.handle_errors(response, :invoice_approve)
     end
 
     MarkSentInvoiceQuery = Waveapps::Api::Client.parse <<-'GRAPHQL'
       mutation ($input: InvoiceMarkSentInput!) {
-        invoiceSend(input: $input) {
+        invoiceMarkSent(input: $input) {
           didSucceed
           inputErrors {
             message
@@ -377,7 +399,7 @@ module Waveapps
     GRAPHQL
 
     def self.mark_as_sent(sent_at: nil, send_method: , invoice_id: )
-      result = Waveapps::Api::Client.query(
+      response = Waveapps::Api::Client.query(
         MarkSentInvoiceQuery, variables: {
           input: {
             invoiceId: invoice_id,
@@ -385,7 +407,11 @@ module Waveapps
             sendMethod: send_method
           }
         })
-      result.data
+
+      if response.data && response.data.invoice_mark_sent
+        return response.data.invoice_mark_sent
+      end
+      Waveapps::Api.handle_errors(response, :invoice_mark_sent)
     end
   end
 end

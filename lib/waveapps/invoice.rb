@@ -125,12 +125,15 @@ module Waveapps
     GRAPHQL
 
     def self.list_invoices(page: 1, page_size: 10, business_id:)
-      result = Waveapps::Api::Client.query(ListInvoicesQuery, variables: {
-                                             businessId: business_id, page: page, pageSize: page_size
-                                           }).data
-      return nil if result.business.nil?
+      response = Waveapps::Api::Client.query(
+        ListInvoicesQuery, variables: {
+          businessId: business_id, page: page, pageSize: page_size
+        })
 
-      result.business.invoices.edges.map(&:node)
+      if response.data && response.data.business
+        return response.data.business.invoices.edges.map(&:node)
+      end
+      Waveapps::Api.handle_errors(response, :business)
     end
 
     CreateInvoiceQuery = Waveapps::Api::Client.parse <<-'GRAPHQL'
@@ -259,42 +262,48 @@ module Waveapps
       hide_price: nil, hide_amount: nil, items:, business_id:, customer_id:
     )
 
-      Waveapps::Api::Client.query(CreateInvoiceQuery, variables: {
-                                    input: {
-                                      businessId: business_id,
-                                      customerId: customer_id,
-                                      items: items.map do |pid|
-                                               {
-                                                 productId: pid[:product_id],
-                                                 quantity: pid[:quantity],
-                                                 description: pid[:description],
-                                                 unitPrice: pid[:unit_price]
-                                               }
-                                             end,
-                                      status: status,
-                                      currency: currency,
-                                      title: title,
-                                      invoiceNumber: invoice_number,
-                                      poNumber: po_number,
-                                      invoiceDate: invoice_date,
-                                      exchangeRate: exchange_rate,
-                                      dueDate: due_date,
-                                      memo: memo,
-                                      footer: footer,
-                                      disableAmexPayments: disable_amex_payments,
-                                      disableCreditCardPayments: disable_credit_card_payments,
-                                      disableBankPayments: disable_bank_payments,
-                                      itemTitle: item_title,
-                                      unitTitle: unit_title,
-                                      priceTitle: price_title,
-                                      amountTitle: amount_title,
-                                      hideName: hide_name,
-                                      hideDescription: hide_description,
-                                      hideUnit: hide_unit,
-                                      hidePrice: hide_price,
-                                      hideAmount: hide_amount
-                                    }
-                                  })
+      response = Waveapps::Api::Client.query(
+        CreateInvoiceQuery, variables: {
+          input: {
+            businessId: business_id,
+            customerId: customer_id,
+            items: items.map do |pid|
+              {
+               productId: pid[:product_id],
+               quantity: pid[:quantity],
+               description: pid[:description],
+               unitPrice: pid[:unit_price]
+              }
+            end,
+            status: status,
+            currency: currency,
+            title: title,
+            invoiceNumber: invoice_number,
+            poNumber: po_number,
+            invoiceDate: invoice_date,
+            exchangeRate: exchange_rate,
+            dueDate: due_date,
+            memo: memo,
+            footer: footer,
+            disableAmexPayments: disable_amex_payments,
+            disableCreditCardPayments: disable_credit_card_payments,
+            disableBankPayments: disable_bank_payments,
+            itemTitle: item_title,
+            unitTitle: unit_title,
+            priceTitle: price_title,
+            amountTitle: amount_title,
+            hideName: hide_name,
+            hideDescription: hide_description,
+            hideUnit: hide_unit,
+            hidePrice: hide_price,
+            hideAmount: hide_amount
+          }
+        })
+
+      if response.data && response.data.invoice_create
+        return response.data.invoice_create
+      end
+      Waveapps::Api.handle_errors(response, :invoice_create)
     end
 
     DeleteInvoiceQuery = Waveapps::Api::Client.parse <<-'GRAPHQL'
@@ -310,9 +319,99 @@ module Waveapps
   		}
     GRAPHQL
 
-    def self.delete_invoice(id)
-      result = Waveapps::Api::Client.query(DeleteInvoiceQuery, variables: { input: { id: id } })
-      result.data
+    def self.delete_invoice(invoice_id:)
+      response = Waveapps::Api::Client.query(DeleteInvoiceQuery, variables:
+        { input: { invoiceId: invoice_id }
+      })
+
+      if response.data && response.data.invoice_delete
+        return response.data.invoice_delete
+      end
+      Waveapps::Api.handle_errors(response, :invoice_delete)
+    end
+
+    SendInvoiceQuery = Waveapps::Api::Client.parse <<-'GRAPHQL'
+      mutation ($input: InvoiceSendInput!) {
+        invoiceSend(input: $input) {
+          didSucceed
+          inputErrors {
+            message
+            code
+            path
+          }
+        }
+      }
+    GRAPHQL
+
+    def self.send_invoice(subject: "", message: "", attach_pdf: false, invoice_id:, to: )
+      response = Waveapps::Api::Client.query(
+        SendInvoiceQuery, variables: {
+          input: {
+            invoiceId: invoice_id,
+            to: to,
+            attachPDF: attach_pdf,
+            subject: subject,
+            message: message
+          }
+        })
+
+      if response.data && response.data.invoice_send
+        return response.data.invoice_send
+      end
+      Waveapps::Api.handle_errors(response, :invoice_send)
+    end
+
+    ApproveInvoiceQuery = Waveapps::Api::Client.parse <<-'GRAPHQL'
+      mutation ($input: InvoiceApproveInput!) {
+        invoiceApprove(input: $input) {
+          didSucceed
+          inputErrors {
+            message
+            code
+            path
+          }
+        }
+      }
+    GRAPHQL
+
+    def self.approve_invoice(invoice_id: )
+      response = Waveapps::Api::Client.query(ApproveInvoiceQuery, variables: {
+        input: { invoiceId: invoice_id }
+      })
+
+      if response.data && response.data.invoice_approve
+        return response.data.invoice_approve
+      end
+      Waveapps::Api.handle_errors(response, :invoice_approve)
+    end
+
+    MarkSentInvoiceQuery = Waveapps::Api::Client.parse <<-'GRAPHQL'
+      mutation ($input: InvoiceMarkSentInput!) {
+        invoiceMarkSent(input: $input) {
+          didSucceed
+          inputErrors {
+            message
+            code
+            path
+          }
+        }
+      }
+    GRAPHQL
+
+    def self.mark_as_sent(sent_at: nil, send_method: , invoice_id: )
+      response = Waveapps::Api::Client.query(
+        MarkSentInvoiceQuery, variables: {
+          input: {
+            invoiceId: invoice_id,
+            sentAt: sent_at,
+            sendMethod: send_method
+          }
+        })
+
+      if response.data && response.data.invoice_mark_sent
+        return response.data.invoice_mark_sent
+      end
+      Waveapps::Api.handle_errors(response, :invoice_mark_sent)
     end
   end
 end

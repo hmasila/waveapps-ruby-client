@@ -26,5 +26,26 @@ module Waveapps
     # Schema = GraphQL::Client.load_schema("./tmp/schema.json")
 
     Client = GraphQL::Client.new(schema: Schema, execute: HTTP)
+
+    def self.handle_errors(response, mutation)
+      # Parse/validation errors will have `response.data = nil`. The top level
+      # errors object will report these.
+      if response.errors.any?
+        # "Could not resolve to a node with the global id of 'abc'"
+        message = response.errors[:data].join(", ")
+        return ::Waveapps::Error.new(message)
+
+      # The server will likely give us a message about why the node()
+      # lookup failed.
+      elsif data = response.data
+        # "Could not resolve to a node with the global id of 'abc'"
+        if data.errors[mutation].any?
+          message = data.errors[mutation].join(", ")
+          return ::Waveapps::Error.new(message)
+        end
+      else
+        Waveapps::Error.new("Something went wrong!")
+      end
+    end
   end
 end

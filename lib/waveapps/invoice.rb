@@ -3,11 +3,19 @@
 module Waveapps
   class Invoice
     ListInvoicesQuery = Waveapps::Api::Client.parse <<-'GRAPHQL'
-  		query($businessId: ID!, $page: Int!, $pageSize: Int!) {
+  		query(
+        $businessId: ID!, $page: Int!, $pageSize: Int!, $sort: [InvoiceSort!]!,
+        $status: InvoiceStatus, $customerId: ID, $currency: CurrencyCode,
+        $sourceId: ID, $invoiceDateStart: Date, $invoiceDateEnd: Date,
+        $modifiedAtAfter: DateTime, $modifiedAtBefore: DateTime) {
 			  business(id: $businessId) {
 			    id
 			    isClassicInvoicing
-			    invoices(page: $page, pageSize: $pageSize) {
+			    invoices(page: $page, pageSize: $pageSize, sort: $sort,
+          status: $status, customerId: $customerId, currency: $currency,
+          sourceId: $sourceId, invoiceDateStart: $invoiceDateStart,
+          invoiceDateEnd: $invoiceDateEnd, modifiedAtAfter: $modifiedAtAfter,
+          modifiedAtBefore: $modifiedAtBefore) {
 			      pageInfo {
 			        currentPage
 			        totalPages
@@ -124,14 +132,22 @@ module Waveapps
 			}
     GRAPHQL
 
-    def self.list_invoices(page: 1, page_size: 10, business_id:)
+    def self.list_invoices(page: 1, page_size: 10, sort: [ "CREATED_AT_DESC"],
+      status: nil, customer_id: nil, currency: nil, source_id: nil,
+      invoice_date_start: nil, invoice_date_end: nil, modified_at_after: nil,
+      modified_at_before: nil, business_id:
+    )
       response = Waveapps::Api::Client.query(
         ListInvoicesQuery, variables: {
-          businessId: business_id, page: page, pageSize: page_size
+          businessId: business_id, page: page, pageSize: page_size, sort: sort,
+          status: status, customerId: customer_id, currency: currency,
+          sourceId: source_id, invoiceDateStart: invoice_date_start,
+          invoiceDateEnd: invoice_date_end, modifiedAtAfter: modified_at_after,
+          modifiedAtBefore: modified_at_before
         })
 
-      if response.data && response.data.business
-        return response.data.business.invoices.edges.map(&:node)
+      if response.data && response.data.business && response.data.business
+        return response.data.business.invoices
       end
       Waveapps::Api.handle_errors(response, :business)
     end
